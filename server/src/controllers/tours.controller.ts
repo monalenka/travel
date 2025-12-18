@@ -8,7 +8,7 @@ const mockTours = [
         description: 'Знакомство с главными достопримечательностями столицы',
         price: 2500,
         duration: 4,
-        images: ['https://picsum.photos/seed/tour1/400/300'],
+        images: ['assets/images/tours/moscow.jpg'],
         isActive: true
     },
     {
@@ -17,7 +17,7 @@ const mockTours = [
         description: 'Волшебство белых ночей и разводных мостов',
         price: 3200,
         duration: 3,
-        images: ['https://picsum.photos/seed/tour2/400/300'],
+        images: ['assets/images/tours/saint.jpg'],
         isActive: true
     },
     {
@@ -26,7 +26,7 @@ const mockTours = [
         description: 'Путешествие по древним русским городам',
         price: 15000,
         duration: 24,
-        images: ['https://picsum.photos/seed/tour3/400/300'],
+        images: ['assets/images/tours/crimea.jpg'],
         isActive: true
     }
 ];

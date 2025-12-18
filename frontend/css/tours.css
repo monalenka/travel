@@ -1,0 +1,191 @@
+.tours-page {
+    padding-top: 20px;
+}
+
+.page-hero {
+    position: relative;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        url('../../assets/images/hero/tours-hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    text-align: center;
+    padding: 140px 20px 90px;
+    margin-bottom: 40px;
+}
+
+.page-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+.page-hero>* {
+    position: relative;
+    z-index: 2;
+}
+
+.breadcrumbs {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.breadcrumbs a {
+    color: white;
+    text-decoration: none;
+    opacity: 0.9;
+    transition: opacity 0.3s;
+}
+
+.breadcrumbs a:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+.breadcrumbs-separator {
+    opacity: 0.7;
+}
+
+.breadcrumbs .current {
+    color: white;
+    opacity: 0.9;
+    font-weight: 500;
+}
+
+.page-hero h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    line-height: 1.2;
+}
+
+.divider {
+    height: 2px;
+    width: 60px;
+    background-color: white;
+    margin: 0 auto;
+    opacity: 0.8;
+}
+
+/* Сортировка */
+.sorting {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.sorting span {
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.sort-btn {
+    background: none;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 20px;
+    font-family: 'Noto Sans', sans-serif;
+    color: var(--text);
+    transition: var(--transition);
+}
+
+.sort-btn:hover,
+.sort-btn.active {
+    background: var(--primary);
+    color: white;
+}
+
+.all-tours .tours-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 50px;
+}
+
+.page-btn {
+    padding: 8px 15px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.page-btn:hover:not(.disabled) {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.page-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.page-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.cta-section {
+    text-align: center;
+    padding: 80px 20px;
+    background: var(--light);
+    margin-top: 60px;
+}
+
+.cta-section h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+    color: var(--dark);
+    margin-bottom: 15px;
+}
+
+.cta-section p {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    color: var(--text);
+}
+
+@media (max-width: 768px) {
+    .page-hero {
+        padding: 60px 20px 40px;
+    }
+
+    .page-hero h1 {
+        font-size: 2rem;
+    }
+
+    .breadcrumbs {
+        font-size: 0.8rem;
+    }
+
+    .sorting {
+        flex-wrap: wrap;
+    }
+
+    .all-tours .tours-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tour Details - Day Tours from Nice</title>
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/tour.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Noto+Sans:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <header id="main-header"></header>
+
+    <main class="tour-details-page">
+        <nav class="breadcrumbs container">
+            <a href="/">Home</a> >
+            <a href="tours.html">All Tours</a> >
+            <span id="tour-title-breadcrumb">Tour Details</span>
+        </nav>
+
+        <div class="container">
+            <div class="tour-details-grid">
+                <div class="tour-main-content">
+                    <div class="tour-gallery" id="tour-gallery">
+                        <div class="main-image">
+                            <img id="tour-main-image" src="" alt="Tour Image">
+                        </div>
+                    </div>
+
+                    <section class="tour-description-section">
+                        <h1 id="tour-title"></h1>
+
+                        <div class="tour-meta">
+                            <span class="tour-rating">
+                                <i class="fas fa-star"></i>
+                                <span id="tour-rating">4.9</span>
+                            </span>
+                            <span class="tour-duration" id="tour-duration">
+                                <i class="far fa-clock"></i> Full Day
+                            </span>
+                            <span class="tour-group" id="tour-group">
+                                <i class="fas fa-users"></i> Small Group
+                            </span>
+                        </div>
+
+                        <div class="tour-description" id="tour-full-description"></div>
+
+                        <div class="included-section">
+                            <h3><i class="fas fa-check-circle"></i> What's Included</h3>
+                            <ul id="tour-includes"></ul>
+                        </div>
+
+                        <div class="itinerary-section">
+                            <h3><i class="fas fa-map-marked-alt"></i> Itinerary</h3>
+                            <div class="timeline" id="tour-schedule"></div>
+                        </div>
+                    </section>
+                </div>
+
+                <aside class="tour-booking-sidebar">
+                    <div class="booking-card">
+                        <div class="price-box">
+                            <div class="price-main">
+                                €<span id="tour-price">129</span>
+                            </div>
+                            <div class="price-label">per person</div>
+                        </div>
+
+                        <div class="date-selection">
+                            <h4>Select Date</h4>
+                            <input type="date" id="tour-date" class="date-input" min="">
+                        </div>
+
+                        <div class="group-size">
+                            <h4>Number of Travelers</h4>
+                            <div class="counter">
+                                <button class="counter-btn minus"><i class="fas fa-minus"></i></button>
+                                <input type="number" id="tour-guests" value="2" min="1" max="8" readonly>
+                                <button class="counter-btn plus"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <small>Max 8 persons per booking</small>
+                        </div>
+
+                        <div class="total-price">
+                            <div class="total-row">
+                                <span>Tour Price (2 persons)</span>
+                                <span id="subtotal">€258.00</span>
+                            </div>
+                            <div class="total-row">
+                                <span>Service Fee</span>
+                                <span>€10.00</span>
+                            </div>
+                            <div class="total-row final">
+                                <strong>Total</strong>
+                                <strong id="total-price">€268.00</strong>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary btn-book" id="book-now-btn">
+                            <i class="fas fa-calendar-check"></i> Book Now
+                        </button>
+
+                        <div class="booking-note">
+                            <p><i class="fas fa-shield-alt"></i> Free cancellation up to 48 hours before</p>
+                            <p><i class="fas fa-credit-card"></i> Reserve now, pay later</p>
+                            <p><i class="fas fa-headset"></i> 24/7 customer support</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-card">
+                        <h4>Need Help?</h4>
+                        <p><i class="fas fa-phone"></i> +33 6 12 34 56 78</p>
+                        <p><i class="fas fa-envelope"></i> info@frenchrivieratours.com</p>
+                        <p><i class="fas fa-comments"></i> Chat with us online</p>
+                    </div>
+                </aside>
+            </div>
+
+            <section class="similar-tours">
+                <h2>You Might Also Like</h2>
+                <div class="tours-grid" id="similar-tours"></div>
+            </section>
+        </div>
+    </main>
+
+    <footer id="main-footer"></footer>
+
+    <div class="modal" id="booking-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Complete Your Booking</h2>
+            <form id="booking-form">
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/tour.js"></script>
+</body>
+
+</html>

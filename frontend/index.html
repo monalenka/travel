@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Day Tours from Nice - French Riviera Sightseeing</title>
+	<meta name="description" content="Book your perfect day tour from Nice. Monaco, Cannes, Saint-Tropez and more.">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Noto+Sans:wght@400;500&display=swap"
+		rel="stylesheet">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+	<link rel="stylesheet" href="css/main.css">
+
+	<style>
+		.hero {
+			position: relative;
+			overflow: hidden;
+			height: 600px;
+		}
+
+		.hero-slides {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+
+		.hero-slide {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-size: cover;
+			background-position: center;
+			opacity: 0;
+			transition: opacity 1s ease-in-out;
+		}
+
+		.hero-slide.active {
+			opacity: 1;
+		}
+
+		.hero-content {
+			position: relative;
+			z-index: 2;
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			text-align: center;
+			color: white;
+		}
+
+		.hero-indicators {
+			position: absolute;
+			bottom: 30px;
+			left: 0;
+			right: 0;
+			display: flex;
+			justify-content: center;
+			gap: 10px;
+			z-index: 3;
+		}
+
+		.hero-indicator {
+			width: 12px;
+			height: 12px;
+			border-radius: 50%;
+			background: rgba(255, 255, 255, 0.5);
+			border: none;
+			cursor: pointer;
+			padding: 0;
+			transition: background 0.3s ease, transform 0.3s ease;
+		}
+
+		.hero-indicator.active {
+			background: white;
+			transform: scale(1.2);
+		}
+
+		.hero-slide::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3));
+		}
+
+		.benefits-section {
+			padding: 5rem 0;
+			background-color: #f9fafc;
+		}
+
+		.section-header {
+			text-align: center;
+			margin-bottom: 3rem;
+		}
+
+		.elementor-heading-title {
+			font-family: 'Montserrat', sans-serif;
+			font-size: 2.5rem;
+			font-weight: 700;
+			color: #121331;
+			margin-bottom: 1.5rem;
+			line-height: 1.2;
+		}
+
+		.elementor-widget-divider {
+			display: inline-block;
+			width: 100%;
+			max-width: 200px;
+			margin: 0 auto;
+		}
+
+		.elementor-divider-separator {
+			border-top: 3px solid #5ec8d8;
+			display: block;
+			width: 100%;
+			margin: 0;
+		}
+
+		.benefits-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+			gap: 2.5rem;
+			max-width: 1200px;
+			margin: 0 auto;
+		}
+
+		.benefit-card {
+			background: white;
+			border-radius: 12px;
+			padding: 2rem;
+			box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+			transition: all 0.3s ease;
+			text-align: center;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		.benefit-card:hover {
+			transform: translateY(-10px);
+			box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+		}
+
+		.benefit-icon {
+			margin-bottom: 1.5rem;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background: linear-gradient(135deg, rgba(94, 200, 216, 0.1) 0%, rgba(18, 19, 49, 0.05) 100%);
+			border-radius: 50%;
+			width: 100px;
+			height: 100px;
+		}
+
+		.benefit-title {
+			font-size: 1.3rem;
+			font-weight: 700;
+			color: #121331;
+			margin-bottom: 0.75rem;
+		}
+
+		.benefit-description {
+			color: #666;
+			line-height: 1.6;
+			font-size: 0.95rem;
+		}
+
+		.popular-tours {
+			padding: 5rem 0;
+			background-color: white;
+		}
+
+		.popular-tours .container:last-child {
+			margin-top: 40px;
+		}
+
+		.popular-tours .section-header {
+			margin-bottom: 3rem;
+		}
+
+		.tours-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+			gap: 2rem;
+			margin-top: 2rem;
+		}
+
+		.loading {
+			text-align: center;
+			padding: 2rem;
+			color: #666;
+			grid-column: 1 / -1;
+		}
+
+		.benefit-card {
+			opacity: 0;
+			transform: translateY(30px);
+			animation: slideInUp 0.6s ease forwards;
+		}
+
+		.benefit-card:nth-child(1) {
+			animation-delay: 0.1s;
+		}
+
+		.benefit-card:nth-child(2) {
+			animation-delay: 0.2s;
+		}
+
+		.benefit-card:nth-child(3) {
+			animation-delay: 0.3s;
+		}
+
+		.benefit-card:nth-child(4) {
+			animation-delay: 0.4s;
+		}
+
+		@keyframes slideInUp {
+			from {
+				opacity: 0;
+				transform: translateY(30px);
+			}
+
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		@media (max-width: 1024px) {
+			.benefits-grid {
+				grid-template-columns: repeat(2, 1fr);
+				gap: 2rem;
+			}
+
+			.tours-grid {
+				grid-template-columns: repeat(2, 1fr);
+			}
+		}
+
+		@media (max-width: 768px) {
+
+			.benefits-section,
+			.popular-tours {
+				padding: 3rem 0;
+			}
+
+			.elementor-heading-title {
+				font-size: 2rem;
+			}
+
+			.benefits-grid {
+				grid-template-columns: 1fr;
+				gap: 1.5rem;
+				padding: 0 1rem;
+			}
+
+			.tours-grid {
+				grid-template-columns: 1fr;
+				padding: 0 1rem;
+			}
+
+			.benefit-card {
+				padding: 1.5rem;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<header id="main-header"></header>
+
+	<main>
+		<section class="hero" id="hero-slider">
+			<div class="hero-slides" id="hero-slides-container">
+			</div>
+
+			<div class="container hero-content">
+				<h1>Day Tours from Nice</h1>
+				<p>Discover the French Riviera with our expert guides</p>
+				<a href="#tours" class="btn btn-primary">
+					<i class="fas fa-binoculars"></i> View Tours
+				</a>
+			</div>
+
+			<div class="hero-indicators" id="hero-indicators">
+			</div>
+		</section>
+
+
+		<section class="benefits-section">
+			<div class="container">
+				<div class="section-header">
+					<h2 class="elementor-heading-title elementor-size-default">Why Choose Us</h2>
+					<div class="elementor-widget-divider elementor-widget-divider--view-line">
+						<div class="elementor-divider">
+							<span class="elementor-divider-separator"></span>
+						</div>
+					</div>
+				</div>
+
+				<div class="benefits-grid">
+					<div class="benefit-card">
+						<div class="benefit-icon">
+							<lord-icon src="https://cdn.lordicon.com/zvgtwjbo.json" trigger="hover" stroke="light"
+								colors="primary:#121331,secondary:#5ec8d8" style="width:60px;height:60px">
+							</lord-icon>
+						</div>
+						<div class="benefit-content">
+							<h3 class="benefit-title">Small Group Tours</h3>
+							<p class="benefit-description">Explore at your pace with small-group tours</p>
+						</div>
+					</div>
+
+					<div class="benefit-card">
+						<div class="benefit-icon">
+							<lord-icon src="https://cdn.lordicon.com/weloglbk.json" trigger="hover" stroke="light"
+								colors="primary:#121331,secondary:#5ec8d8" style="width:60px;height:60px">
+							</lord-icon>
+						</div>
+						<div class="benefit-content">
+							<h3 class="benefit-title">12 Years of Experience</h3>
+							<p class="benefit-description">Trusted by 20,000+ travelers exploring the French Riviera</p>
+						</div>
+					</div>
+
+					<div class="benefit-card">
+						<div class="benefit-icon">
+							<lord-icon src="https://cdn.lordicon.com/gyowcxtr.json" trigger="hover" stroke="light"
+								colors="primary:#121331,secondary:#5ec8d8" style="width:60px;height:60px">
+							</lord-icon>
+						</div>
+						<div class="benefit-content">
+							<h3 class="benefit-title">Free Cancellation</h3>
+							<p class="benefit-description">Cancel your day trip up to 24 hours in advance</p>
+						</div>
+					</div>
+
+					<div class="benefit-card">
+						<div class="benefit-icon">
+							<lord-icon src="https://cdn.lordicon.com/aucxxwfa.json" trigger="hover" stroke="light"
+								colors="primary:#121331,secondary:#5ec8d8" style="width:60px;height:60px">
+							</lord-icon>
+						</div>
+						<div class="benefit-content">
+							<h3 class="benefit-title">Local Multilingual Guides</h3>
+							<p class="benefit-description">Tours available in English, French, Spanish, German, Italian,
+								Arabic & Russian</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="popular-tours" id="tours">
+			<div class="container">
+				<div class="section-header">
+					<h2 class="elementor-heading-title elementor-size-default">Popular Day Tours</h2>
+					<div class="elementor-widget-divider elementor-widget-divider--view-line">
+						<div class="elementor-divider">
+							<span class="elementor-divider-separator"></span>
+						</div>
+					</div>
+				</div>
+
+				<div class="tours-grid" id="tours-container">
+					<div class="loading">Loading tours...</div>
+				</div>
+
+				<div class="container hero-content">
+					<a href="#tours" class="btn btn-primary">
+						<i class="fas fa-binoculars"></i> VIEW ALL TOURS
+					</a>
+				</div>
+			</div>
+		</section>
+
+	</main>
+
+	<footer id="main-footer">
+		<div class="footer-content">
+			<div class="container">
+				<div class="elementor-container elementor-column-gap-default">
+					<div class="elementor-column elementor-col-25">
+						<div class="elementor-widget-wrap elementor-element-populated">
+							<div class="elementor-widget">
+								<div class="elementor-widget-container">
+									<h3 class="elementor-heading-title elementor-size-default">Follow us</h3>
+								</div>
+							</div>
+
+							<div class="elementor-widget">
+								<div class="elementor-widget-container">
+									<div class="footer-social-icons">
+										<a class="footer-social-icon facebook"
+											href="https://www.facebook.com/frenchrivierasightseeing/" target="_blank"
+											aria-label="Facebook">
+											<i class="fab fa-facebook-f"></i>
+										</a>
+										<a class="footer-social-icon instagram"
+											href="https://www.instagram.com/frenchrivierasightseeing/" target="_blank"
+											aria-label="Instagram">
+											<i class="fab fa-instagram"></i>
+										</a>
+										<a class="footer-social-icon twitter" href="https://twitter.com/FrenchRivieraS2"
+											target="_blank" aria-label="Twitter">
+											<i class="fab fa-twitter"></i>
+										</a>
+										<a class="footer-social-icon tripadvisor"
+											href="https://www.tripadvisor.fr/Attraction_Review-g187234-d19468194-Reviews-French_Riviera_Sightseeing-Nice_French_Riviera_Cote_d_Azur_Provence_Alpes_Cote_d.html"
+											target="_blank" aria-label="Tripadvisor">
+											<i class="fab fa-tripadvisor"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+
+							<div class="elementor-widget">
+								<div class="elementor-widget-container">
+									<h3 class="elementor-heading-title elementor-size-default">Information</h3>
+								</div>
+							</div>
+
+							<div class="elementor-widget">
+								<div class="elementor-widget-container">
+									<ul class="footer-links">
+										<li><a href="https://frenchriviera-services.com/contact/">Contact</a></li>
+										<li><a href="https://frenchriviera-services.com/plan-du-site/">Sitemap</a>
+										</li>
+										<li><a href="https://frenchriviera-services.com/mentions-legales/">Legal
+												notices</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="elementor-column elementor-col-25">
+						<div class="elementor-widget-wrap elementor-element-populated">
+							<a class="rating-card" href="https://maps.app.goo.gl/fa5QQLYMnshhw4127" target="_blank">
+								<div class="rating-logo">
+									<img src="https://frenchriviera-services.com/wp-content/uploads/2025/10/google-white-logo-1024x337.png"
+										alt="Google Reviews">
+								</div>
+								<div class="rating-info">
+									<div class="rating-text">4.9/5 ★<br>9,420+ Reviews</div>
+								</div>
+							</a>
+						</div>
+					</div>
+
+					<div class="elementor-column elementor-col-25">
+						<div class="elementor-widget-wrap elementor-element-populated">
+							<a class="rating-card"
+								href="https://www.tripadvisor.fr/Attraction_Review-g187234-d19468194-Reviews-French_Riviera_Sightseeing-Nice_French_Riviera_Cote_d_Azur_Provence_Alpes_Cote_d.html"
+								target="_blank">
+								<div class="rating-logo">
+									<img src="https://frenchriviera-services.com/wp-content/uploads/2025/10/logota.png"
+										alt="Tripadvisor">
+								</div>
+								<div class="rating-info">
+									<div class="rating-text">4.2/5 ★<br>1,090+ Reviews</div>
+								</div>
+							</a>
+						</div>
+					</div>
+
+					<div class="elementor-column elementor-col-25">
+						<div class="elementor-widget-wrap elementor-element-populated">
+							<div class="qr-code">
+								<img src="https://frenchriviera-services.com/wp-content/uploads/2021/04/screenshot-www.canva_.com-2021.04.29-04_28_04.png"
+									alt="QR Code" loading="lazy">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="copyright">
+					<p>&copy; 2025 Nice Tour. All rights reserved.</p>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+	<script type="module" src="js/main.js"></script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			console.log('DOM loaded, starting hero slider...');
+
+			const heroImages = [
+				'images/nice-view1.jpg',
+				'images/nice-view2.jpg',
+				'images/nice-view3.jpg',
+				'images/nice-view4.jpg'
+			];
+
+			const slidesContainer = document.getElementById('hero-slides-container');
+			const indicatorsContainer = document.getElementById('hero-indicators');
+
+			if (!slidesContainer || !indicatorsContainer) {
+				console.error('Slider containers not found!');
+				return;
+			}
+
+			if (slidesContainer.children.length > 0) {
+				console.log('Slides already exist, clearing...');
+				slidesContainer.innerHTML = '';
+				indicatorsContainer.innerHTML = '';
+			}
+
+			let currentSlide = 0;
+			let slideInterval;
+
+			console.log('Creating', heroImages.length, 'slides...');
+
+			heroImages.forEach((image, index) => {
+				const slide = document.createElement('div');
+				slide.className = 'hero-slide';
+				slide.style.backgroundImage = `url('${image}')`;
+				slide.style.backgroundSize = 'cover';
+				slide.style.backgroundPosition = 'center';
+
+				if (index === 0) {
+					slide.classList.add('active');
+				}
+
+				slidesContainer.appendChild(slide);
+
+				const indicator = document.createElement('button');
+				indicator.className = 'hero-indicator';
+				indicator.setAttribute('aria-label', `Go to slide ${index + 1}`);
+				indicator.setAttribute('data-index', index);
+
+				if (index === 0) {
+					indicator.classList.add('active');
+				}
+
+				indicator.addEventListener('click', function () {
+					goToSlide(index);
+				});
+
+				indicatorsContainer.appendChild(indicator);
+			});
+
+			function goToSlide(index) {
+				const slides = document.querySelectorAll('.hero-slide');
+				const indicators = document.querySelectorAll('.hero-indicator');
+
+				if (slides.length === 0) {
+					console.error('No slides found!');
+					return;
+				}
+
+				if (index < 0 || index >= slides.length) {
+					console.error('Invalid slide index:', index);
+					return;
+				}
+
+				slides[currentSlide].classList.remove('active');
+				indicators[currentSlide].classList.remove('active');
+
+				currentSlide = index;
+
+				slides[currentSlide].classList.add('active');
+				indicators[currentSlide].classList.add('active');
+
+				resetInterval();
+			}
+
+			function nextSlide() {
+				const nextIndex = (currentSlide + 1) % heroImages.length;
+				goToSlide(nextIndex);
+			}
+
+			function prevSlide() {
+				const prevIndex = (currentSlide - 1 + heroImages.length) % heroImages.length;
+				goToSlide(prevIndex);
+			}
+
+			function resetInterval() {
+				if (slideInterval) {
+					clearInterval(slideInterval);
+				}
+				slideInterval = setInterval(nextSlide, 4000);
+				console.log('Interval reset, next slide in 4 seconds');
+			}
+
+			console.log('Starting slider interval...');
+			resetInterval();
+
+			const heroSection = document.getElementById('hero-slider');
+			if (heroSection) {
+				heroSection.addEventListener('mouseenter', function () {
+					console.log('Slider paused (mouse enter)');
+					clearInterval(slideInterval);
+				});
+
+				heroSection.addEventListener('mouseleave', function () {
+					console.log('Slider resumed (mouse leave)');
+					resetInterval();
+				});
+			}
+
+			console.log('Slider initialized successfully');
+			console.log('Total slides:', document.querySelectorAll('.hero-slide').length);
+
+			console.log('Use these commands in console to control slider:');
+			console.log('window.nextSlide() - next slide');
+			console.log('window.prevSlide() - previous slide');
+			console.log('window.goToSlide(n) - go to specific slide');
+
+			window.nextSlide = nextSlide;
+			window.prevSlide = prevSlide;
+			window.goToSlide = goToSlide;
+			window.sliderInterval = slideInterval;
+		});
+	</script>
+</body>
+
+</html>
