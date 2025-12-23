@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Private Tours - Day Tours from Nice</title>
+	<meta name="description" content="Private personalized chauffeur-driven tour of the French Riviera from Nice.">
+
+	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="css/tours.css">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Noto+Sans:wght@400;500&display=swap"
+		rel="stylesheet">
+
+	<style>
+		.page-hero {
+			position: relative;
+			overflow: hidden;
+			height: 600px;
+			margin-bottom: 40px;
+		}
+
+		.hero-slides {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+
+		.hero-slide {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-size: cover;
+			background-position: center;
+			opacity: 0;
+			transition: opacity 1s ease-in-out;
+		}
+
+		.hero-slide.active {
+			opacity: 1;
+		}
+
+		.hero-content {
+			position: relative;
+			z-index: 2;
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			text-align: center;
+			color: white;
+			padding-top: 80px;
+		}
+
+		.hero-indicators {
+			position: absolute;
+			bottom: 30px;
+			left: 0;
+			right: 0;
+			display: flex;
+			justify-content: center;
+			gap: 10px;
+			z-index: 3;
+		}
+
+		.hero-indicator {
+			width: 12px;
+			height: 12px;
+			border-radius: 50%;
+			background: rgba(255, 255, 255, 0.5);
+			border: none;
+			cursor: pointer;
+			padding: 0;
+			transition: background 0.3s ease, transform 0.3s ease;
+		}
+
+		.hero-indicator.active {
+			background: white;
+			transform: scale(1.2);
+		}
+
+		.hero-slide::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3));
+		}
+
+		.breadcrumbs {
+			font-family: 'Noto Sans', sans-serif;
+			font-size: 0.9rem;
+			margin-bottom: 20px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			gap: 5px;
+		}
+
+		.breadcrumbs a {
+			color: white;
+			text-decoration: none;
+			opacity: 0.9;
+			transition: opacity 0.3s;
+		}
+
+		.breadcrumbs a:hover {
+			opacity: 1;
+			text-decoration: underline;
+		}
+
+		.breadcrumbs-separator {
+			opacity: 0.7;
+		}
+
+		.breadcrumbs .current {
+			color: white;
+			opacity: 0.9;
+			font-weight: 500;
+		}
+
+		.page-hero h1 {
+			font-family: 'Montserrat', sans-serif;
+			font-size: 2.8rem;
+			font-weight: 700;
+			margin-bottom: 25px;
+			line-height: 1.2;
+			text-shadow: 0 0 24px rgba(0, 0, 0, 0.29);
+		}
+
+		.divider {
+			height: 2px;
+			width: 60px;
+			background-color: white;
+			margin: 0 auto;
+			opacity: 0.8;
+		}
+
+		@media (max-width: 768px) {
+			.page-hero {
+				height: 450px;
+			}
+
+			.page-hero h1 {
+				font-size: 2rem;
+			}
+
+			.hero-content {
+				padding-top: 60px;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<header id="main-header"></header>
+
+	<main class="tours-page">
+		<section class="page-hero" id="hero-slider">
+			<div class="hero-slides" id="hero-slides-container"></div>
+
+			<div class="container hero-content">
+				<div class="breadcrumbs">
+					<a href="index.html">Home page</a>
+					<span class="breadcrumbs-separator">›</span>
+					<span class="current">Private tours</span>
+				</div>
+				<h1>PRIVATE TOURS</h1>
+				<div class="divider"></div>
+			</div>
+
+			<div class="hero-indicators" id="hero-indicators"></div>
+		</section>
+
+		<section class="all-tours">
+			<div class="container">
+
+				<div class="tours-grid" id="all-tours-container">
+					<div class="loading">Loading tours...</div>
+				</div>
+
+				<div class="pagination" id="pagination">
+				</div>
+			</div>
+		</section>
+
+		<section class="cta-section">
+			<div class="container">
+				<h2>Can't find what you're looking for?</h2>
+				<p>Contact us for custom tours and private experiences</p>
+				<a href="contact.html" class="btn btn-primary">Contact Us</a>
+			</div>
+		</section>
+	</main>
+
+	<footer id="main-footer"></footer>
+
+	<script type="module" src="js/main.js"></script>
+	<script type="module" src="js/tours.js"></script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			console.log('Private Tours page loaded, starting hero slider...');
+
+			const heroImages = [
+				'images/private-tours/private1.jpg',
+				'images/private-tours/private2.jpg',
+				'images/private-tours/private3.jpg',
+				'images/private-tours/private4.jpg'
+			];
+
+			const defaultImages = [
+				'images/nice-view1.jpg',
+				'images/nice-view2.jpg',
+				'images/nice-view3.jpg',
+				'images/nice-view4.jpg'
+			];
+
+			const slidesContainer = document.getElementById('hero-slides-container');
+			const indicatorsContainer = document.getElementById('hero-indicators');
+
+			if (!slidesContainer || !indicatorsContainer) {
+				console.error('Slider containers not found!');
+				return;
+			}
+
+			if (slidesContainer.children.length > 0) {
+				slidesContainer.innerHTML = '';
+				indicatorsContainer.innerHTML = '';
+			}
+
+			let currentSlide = 0;
+			let slideInterval;
+
+			const useImages = heroImages.every(img => {
+				const imgObj = new Image();
+				imgObj.src = img;
+				return imgObj.complete || imgObj.width > 0;
+			}) ? heroImages : defaultImages;
+
+			console.log('Using images for Private Tours slider:', useImages);
+
+			useImages.forEach((image, index) => {
+				const slide = document.createElement('div');
+				slide.className = 'hero-slide';
+				slide.style.backgroundImage = `url('${image}')`;
+				slide.style.backgroundSize = 'cover';
+				slide.style.backgroundPosition = 'center';
+
+				if (index === 0) {
+					slide.classList.add('active');
+				}
+
+				slidesContainer.appendChild(slide);
+
+				const indicator = document.createElement('button');
+				indicator.className = 'hero-indicator';
+				indicator.setAttribute('aria-label', `Go to slide ${index + 1}`);
+				indicator.setAttribute('data-index', index);
+
+				if (index === 0) {
+					indicator.classList.add('active');
+				}
+
+				indicator.addEventListener('click', function () {
+					goToSlide(index);
+				});
+
+				indicatorsContainer.appendChild(indicator);
+			});
+
+			function goToSlide(index) {
+				const slides = document.querySelectorAll('.hero-slide');
+				const indicators = document.querySelectorAll('.hero-indicator');
+
+				if (slides.length === 0) {
+					console.error('No slides found!');
+					return;
+				}
+
+				if (index < 0 || index >= slides.length) {
+					console.error('Invalid slide index:', index);
+					return;
+				}
+
+				slides[currentSlide].classList.remove('active');
+				indicators[currentSlide].classList.remove('active');
+
+				currentSlide = index;
+
+				slides[currentSlide].classList.add('active');
+				indicators[currentSlide].classList.add('active');
+
+				resetInterval();
+			}
+
+			function nextSlide() {
+				const nextIndex = (currentSlide + 1) % useImages.length;
+				goToSlide(nextIndex);
+			}
+
+			function prevSlide() {
+				const prevIndex = (currentSlide - 1 + useImages.length) % useImages.length;
+				goToSlide(prevIndex);
+			}
+
+			function resetInterval() {
+				if (slideInterval) {
+					clearInterval(slideInterval);
+				}
+				slideInterval = setInterval(nextSlide, 4000);
+			}
+
+			resetInterval();
+
+			const heroSection = document.getElementById('hero-slider');
+			if (heroSection) {
+				heroSection.addEventListener('mouseenter', function () {
+					clearInterval(slideInterval);
+				});
+
+				heroSection.addEventListener('mouseleave', function () {
+					resetInterval();
+				});
+			}
+
+			window.nextSlide = nextSlide;
+			window.prevSlide = prevSlide;
+			window.goToSlide = goToSlide;
+		});
+	</script>
+</body>
+
+</html>

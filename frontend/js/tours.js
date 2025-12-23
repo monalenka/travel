@@ -1,8 +1,7 @@
-import { loadHeader, loadFooter } from './main.js';
+import { loadHeader } from './main.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     loadHeader();
-    loadFooter();
 
     setActiveNavLink();
 
@@ -15,16 +14,33 @@ document.addEventListener('DOMContentLoaded', async () => {
     initMobileMenu();
 });
 
+
+function initPrivateToursSlider() {
+    console.log('Private Tours slider ready');
+}
+
+if (typeof window !== 'undefined') {
+    window.initPrivateToursSlider = initPrivateToursSlider;
+}
+
 async function loadAllTours() {
     const container = document.getElementById('all-tours-container');
     if (!container) return;
 
     try {
-        const response = await fetch('/api/tours');
-        const tours = await response.json();
+        const urlParams = new URLSearchParams(window.location.search);
+        const category = urlParams.get('category');
+
+        let apiUrl = 'http://localhost:5000/api/tours';
+        if (category) {
+            apiUrl += `?category=${category}`;
+        }
+
+        const response = await fetch(apiUrl);
+        const result = await response.json();
+        const tours = result.data || result;
 
         window.allTours = tours;
-
         displayTours(tours);
 
     } catch (error) {
@@ -57,10 +73,10 @@ function displayTours(tours) {
 
 function createTourCard(tour) {
     return `
-        <div class="tour-card" data-id="${tour.id}" data-price="${tour.price}" 
-             data-duration="${tour.duration || 'full'}" data-popular="${tour.popular || 0}">
-            <div class="tour-badge">${tour.popular ? '🔥 Popular' : '⭐ New'}</div>
-            <img src="${tour.image || 'default-tour.jpg'}" 
+        <div class="tour-card" data-id="${tour._id}" data-price="${tour.basePrice}" 
+             data-duration="${tour.duration || 'full'}" data-popular="${tour.isPopular || 0}">
+            <div class="tour-badge">${tour.isPopular ? '🔥 Popular' : '⭐ New'}</div>
+            <img src="${tour.coverImage || 'default-tour.jpg'}" 
                  alt="${tour.title}" class="tour-image">
             <div class="tour-content">
                 <div class="tour-meta">
@@ -72,10 +88,10 @@ function createTourCard(tour) {
                 
                 <div class="tour-footer">
                     <div class="tour-price">
-                        <span class="price">€${tour.price}</span>
+                        <span class="price">€${tour.basePrice}</span>
                         <span class="per-person">per person</span>
                     </div>
-                    <button class="btn btn-primary view-details" data-id="${tour.id}">
+                    <button class="btn btn-primary view-details" data-id="${tour._id}">
                         View Details
                     </button>
                 </div>
@@ -83,6 +99,26 @@ function createTourCard(tour) {
         </div>
     `;
 }
+
+function addTourCardListeners() {
+    document.querySelectorAll('.view-details').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            const tourId = this.dataset.id;
+            showTourDetails(tourId);
+        });
+    });
+
+    document.querySelectorAll('.tour-card').forEach(card => {
+        card.addEventListener('click', function (e) {
+            if (!e.target.closest('.view-details')) {
+                const tourId = this.dataset.id;
+                showTourDetails(tourId);
+            }
+        });
+    });
+}
+
 
 function initSorting() {
     document.querySelectorAll('.sort-btn').forEach(btn => {
@@ -115,25 +151,6 @@ function sortTours(tours, sortType) {
     }
 }
 
-function addTourCardListeners() {
-    document.querySelectorAll('.view-details').forEach(btn => {
-        btn.addEventListener('click', function (e) {
-            e.stopPropagation();
-            const tourId = this.dataset.id;
-            showTourDetails(tourId);
-        });
-    });
-
-    document.querySelectorAll('.tour-card').forEach(card => {
-        card.addEventListener('click', function (e) {
-            if (!e.target.closest('.view-details')) {
-                const tourId = this.dataset.id;
-                showTourDetails(tourId);
-            }
-        });
-    });
-}
-
 function showTourDetails(tourId) {
     window.location.href = `tour.html?id=${tourId}`;
 }
@@ -147,7 +164,7 @@ function setActiveNavLink() {
         toursLink.classList.add('active');
     }
 
-    document.querySelectorAll('.nav-link[href="/tours.html"]')
+    document.querySelectorAll('.nav-link[href="/private-tours.html"]')
         .forEach(link => link.classList.add('active'));
 }
 

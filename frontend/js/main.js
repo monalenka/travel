@@ -47,6 +47,8 @@ const mockTours = [
     }
 ];
 
+const API_BASE_URL = 'http://localhost:5000/api';
+
 async function loadTours() {
     const container = document.getElementById('tours-container');
     if (!container) return;
@@ -54,10 +56,17 @@ async function loadTours() {
     container.innerHTML = '<div class="loading">Loading tours...</div>';
 
     try {
-        const tours = await fetchWithTimeout('/api/tours', 3000);
+        const response = await fetch(`${API_BASE_URL}/tours`);
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        const result = await response.json();
+        const tours = result.data || result;
 
         if (tours && tours.length > 0) {
-            console.log('✅ Using backend data');
+            console.log('✅ Using backend data:', tours.length, 'tours');
             displayTours(tours.slice(0, 3));
         } else {
             throw new Error('Backend returned empty data');
@@ -180,10 +189,12 @@ export function loadHeader() {
                     </div>
                     
                     <div class="nav-links">
-                        <a href="/" class="nav-link">Home</a>
-                        <a href="/tours.html" class="nav-link">All Tours</a>
+                        <a href="index.html" class="nav-link active">Home</a>
+                        <a href="smallgroup-tours.html?category=small-group" class="nav-link">Smallgroup tours</a>
+                        <a href="private-tours.html?category=private" class="nav-link">Private tours</a>
+                        <a href="shore-excursions.html?category=shore-excursion" class="nav-link">Shore excursions</a>
+                        <a href="destinations.html?category=destination" class="nav-link">Our destinations</a>
                         
-                        <!-- Языковой переключатель -->
                         <div class="language-switcher">
                             <button class="language-toggle" aria-label="Change language">
                                 <span class="language-current">EN</span>
@@ -204,7 +215,19 @@ export function loadHeader() {
         `;
 
         initLanguageSwitcher();
+        initNavigation();
     }
+}
+
+function initNavigation() {
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            navLinks.forEach(l => l.classList.remove('active'));
+            e.currentTarget.classList.add('active');
+        });
+    });
 }
 
 function initLanguageSwitcher() {

@@ -1,12 +1,28 @@
 import { Router } from 'express';
-import { getTours, getTourById } from '../controllers/tours.controller';
+import {
+    getTours,
+    getTourBySlug,
+    getCategories,
+    createTour,
+    updateTour,
+    deleteTour,
+    getTourStats
+} from '../controllers/tours.controller';
+import { adminAuth } from '../middleware/admin.middleware';
 
 const router = Router();
 
-// GET /api/tours - все активные туры
 router.get('/', getTours);
+router.get('/categories', getCategories);
+router.get('/slug/:slug', getTourBySlug);
 
-// GET /api/tours/:id - тур по ID
-router.get('/:id', getTourById);
+router.get('/stats', adminAuth, getTourStats);
+router.post('/', adminAuth, createTour);
+router.put('/:id', adminAuth, updateTour);
+router.delete('/:id', adminAuth, deleteTour);
+
+router.get('/:id', async (req, res) => {
+    res.redirect(307, `/api/tours/slug/${req.params.id}`);
+});
 
 export default router;
